@@ -1,0 +1,1406 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 18 36 577 806
+%%Title: Enscript Output
+%%Creator: GNU enscript 1.6.5
+%%CreationDate: Thu Sep  8 16:32:59 2011
+%%Orientation: Landscape
+%%Pages: (atend)
+%%DocumentMedia: A4 595 842 0 () ()
+%%DocumentNeededResources: (atend)
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset Enscript-Prolog 1.6 5
+%
+% Procedures.
+%
+
+/_S {	% save current state
+  /_s save def
+} def
+/_R {	% restore from saved state
+  _s restore
+} def
+
+/S {	% showpage protecting gstate
+  gsave
+  showpage
+  grestore
+} bind def
+
+/MF {	% fontname newfontname -> -	make a new encoded font
+  /newfontname exch def
+  /fontname exch def
+
+  /fontdict fontname findfont def
+  /newfont fontdict maxlength dict def
+
+  fontdict {
+    exch
+    dup /FID eq {
+      % skip FID pair
+      pop pop
+    } {
+      % copy to the new font dictionary
+      exch newfont 3 1 roll put
+    } ifelse
+  } forall
+
+  newfont /FontName newfontname put
+
+  % insert only valid encoding vectors
+  encoding_vector length 256 eq {
+    newfont /Encoding encoding_vector put
+  } if
+
+  newfontname newfont definefont pop
+} def
+
+/MF_PS { % fontname newfontname -> -	make a new font preserving its enc
+  /newfontname exch def
+  /fontname exch def
+
+  /fontdict fontname findfont def
+  /newfont fontdict maxlength dict def
+
+  fontdict {
+    exch
+    dup /FID eq {
+      % skip FID pair
+      pop pop
+    } {
+      % copy to the new font dictionary
+      exch newfont 3 1 roll put
+    } ifelse
+  } forall
+
+  newfont /FontName newfontname put
+
+  newfontname newfont definefont pop
+} def
+
+/SF { % fontname width height -> -	set a new font
+  /height exch def
+  /width exch def
+
+  findfont
+  [width 0 0 height 0 0] makefont setfont
+} def
+
+/SUF { % fontname width height -> -	set a new user font
+  /height exch def
+  /width exch def
+
+  /F-gs-user-font MF
+  /F-gs-user-font width height SF
+} def
+
+/SUF_PS { % fontname width height -> -	set a new user font preserving its enc
+  /height exch def
+  /width exch def
+
+  /F-gs-user-font MF_PS
+  /F-gs-user-font width height SF
+} def
+
+/M {moveto} bind def
+/s {show} bind def
+
+/Box {	% x y w h -> -			define box path
+  /d_h exch def /d_w exch def /d_y exch def /d_x exch def
+  d_x d_y  moveto
+  d_w 0 rlineto
+  0 d_h rlineto
+  d_w neg 0 rlineto
+  closepath
+} def
+
+/bgs {	% x y height blskip gray str -> -	show string with bg color
+  /str exch def
+  /gray exch def
+  /blskip exch def
+  /height exch def
+  /y exch def
+  /x exch def
+
+  gsave
+    x y blskip sub str stringwidth pop height Box
+    gray setgray
+    fill
+  grestore
+  x y M str s
+} def
+
+/bgcs { % x y height blskip red green blue str -> -  show string with bg color
+  /str exch def
+  /blue exch def
+  /green exch def
+  /red exch def
+  /blskip exch def
+  /height exch def
+  /y exch def
+  /x exch def
+
+  gsave
+    x y blskip sub str stringwidth pop height Box
+    red green blue setrgbcolor
+    fill
+  grestore
+  x y M str s
+} def
+
+% Highlight bars.
+/highlight_bars {	% nlines lineheight output_y_margin gray -> -
+  gsave
+    setgray
+    /ymarg exch def
+    /lineheight exch def
+    /nlines exch def
+
+    % This 2 is just a magic number to sync highlight lines to text.
+    0 d_header_y ymarg sub 2 sub translate
+
+    /cw d_output_w cols div def
+    /nrows d_output_h ymarg 2 mul sub lineheight div cvi def
+
+    % for each column
+    0 1 cols 1 sub {
+      cw mul /xp exch def
+
+      % for each rows
+      0 1 nrows 1 sub {
+        /rn exch def
+        rn lineheight mul neg /yp exch def
+        rn nlines idiv 2 mod 0 eq {
+	  % Draw highlight bar.  4 is just a magic indentation.
+	  xp 4 add yp cw 8 sub lineheight neg Box fill
+	} if
+      } for
+    } for
+
+  grestore
+} def
+
+% Line highlight bar.
+/line_highlight {	% x y width height gray -> -
+  gsave
+    /gray exch def
+    Box gray setgray fill
+  grestore
+} def
+
+% Column separator lines.
+/column_lines {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h translate
+    /cw d_output_w cols div def
+    1 1 cols 1 sub {
+      cw mul 0 moveto
+      0 d_output_h rlineto stroke
+    } for
+  grestore
+} def
+
+% Column borders.
+/column_borders {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h moveto
+    0 d_output_h rlineto
+    d_output_w 0 rlineto
+    0 d_output_h neg rlineto
+    closepath stroke
+  grestore
+} def
+
+% Do the actual underlay drawing
+/draw_underlay {
+  ul_style 0 eq {
+    ul_str true charpath stroke
+  } {
+    ul_str show
+  } ifelse
+} def
+
+% Underlay
+/underlay {	% - -> -
+  gsave
+    0 d_page_h translate
+    d_page_h neg d_page_w atan rotate
+
+    ul_gray setgray
+    ul_font setfont
+    /dw d_page_h dup mul d_page_w dup mul add sqrt def
+    ul_str stringwidth pop dw exch sub 2 div ul_h_ptsize -2 div moveto
+    draw_underlay
+  grestore
+} def
+
+/user_underlay {	% - -> -
+  gsave
+    ul_x ul_y translate
+    ul_angle rotate
+    ul_gray setgray
+    ul_font setfont
+    0 0 ul_h_ptsize 2 div sub moveto
+    draw_underlay
+  grestore
+} def
+
+% Page prefeed
+/page_prefeed {		% bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} def
+
+% Wrapped line markers
+/wrapped_line_mark {	% x y charwith charheight type -> -
+  /type exch def
+  /h exch def
+  /w exch def
+  /y exch def
+  /x exch def
+
+  type 2 eq {
+    % Black boxes (like TeX does)
+    gsave
+      0 setlinewidth
+      x w 4 div add y M
+      0 h rlineto w 2 div 0 rlineto 0 h neg rlineto
+      closepath fill
+    grestore
+  } {
+    type 3 eq {
+      % Small arrows
+      gsave
+        .2 setlinewidth
+        x w 2 div add y h 2 div add M
+        w 4 div 0 rlineto
+        x w 4 div add y lineto stroke
+
+        x w 4 div add w 8 div add y h 4 div add M
+        x w 4 div add y lineto
+	w 4 div h 8 div rlineto stroke
+      grestore
+    } {
+      % do nothing
+    } ifelse
+  } ifelse
+} def
+
+% EPSF import.
+
+/BeginEPSF {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack
+  userdict begin
+  /showpage { } def
+  0 setgray 0 setlinecap
+  1 setlinewidth 0 setlinejoin
+  10 setmiterlimit [ ] 0 setdash newpath
+  /languagelevel where {
+    pop languagelevel
+    1 ne {
+      false setstrokeadjust false setoverprint
+    } if
+  } if
+} bind def
+
+/EndEPSF {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+%%EndResource
+%%BeginResource: procset Enscript-Encoding-88591 1.6 5
+/encoding_vector [
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclam       	/quotedbl     	/numbersign   	
+/dollar       	/percent      	/ampersand    	/quoteright   	
+/parenleft    	/parenright   	/asterisk     	/plus         	
+/comma        	/hyphen       	/period       	/slash        	
+/zero         	/one          	/two          	/three        	
+/four         	/five         	/six          	/seven        	
+/eight        	/nine         	/colon        	/semicolon    	
+/less         	/equal        	/greater      	/question     	
+/at           	/A            	/B            	/C            	
+/D            	/E            	/F            	/G            	
+/H            	/I            	/J            	/K            	
+/L            	/M            	/N            	/O            	
+/P            	/Q            	/R            	/S            	
+/T            	/U            	/V            	/W            	
+/X            	/Y            	/Z            	/bracketleft  	
+/backslash    	/bracketright 	/asciicircum  	/underscore   	
+/quoteleft    	/a            	/b            	/c            	
+/d            	/e            	/f            	/g            	
+/h            	/i            	/j            	/k            	
+/l            	/m            	/n            	/o            	
+/p            	/q            	/r            	/s            	
+/t            	/u            	/v            	/w            	
+/x            	/y            	/z            	/braceleft    	
+/bar          	/braceright   	/tilde        	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclamdown   	/cent         	/sterling     	
+/currency     	/yen          	/brokenbar    	/section      	
+/dieresis     	/copyright    	/ordfeminine  	/guillemotleft	
+/logicalnot   	/hyphen       	/registered   	/macron       	
+/degree       	/plusminus    	/twosuperior  	/threesuperior	
+/acute        	/mu           	/paragraph    	/bullet       	
+/cedilla      	/onesuperior  	/ordmasculine 	/guillemotright	
+/onequarter   	/onehalf      	/threequarters	/questiondown 	
+/Agrave       	/Aacute       	/Acircumflex  	/Atilde       	
+/Adieresis    	/Aring        	/AE           	/Ccedilla     	
+/Egrave       	/Eacute       	/Ecircumflex  	/Edieresis    	
+/Igrave       	/Iacute       	/Icircumflex  	/Idieresis    	
+/Eth          	/Ntilde       	/Ograve       	/Oacute       	
+/Ocircumflex  	/Otilde       	/Odieresis    	/multiply     	
+/Oslash       	/Ugrave       	/Uacute       	/Ucircumflex  	
+/Udieresis    	/Yacute       	/Thorn        	/germandbls   	
+/agrave       	/aacute       	/acircumflex  	/atilde       	
+/adieresis    	/aring        	/ae           	/ccedilla     	
+/egrave       	/eacute       	/ecircumflex  	/edieresis    	
+/igrave       	/iacute       	/icircumflex  	/idieresis    	
+/eth          	/ntilde       	/ograve       	/oacute       	
+/ocircumflex  	/otilde       	/odieresis    	/divide       	
+/oslash       	/ugrave       	/uacute       	/ucircumflex  	
+/udieresis    	/yacute       	/thorn        	/ydieresis    	
+] def
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Times-Roman
+%%IncludeResource: font Courier-Bold
+/HFpt_w 10 def
+/HFpt_h 10 def
+/Courier-Bold /HF-gs-font MF
+/HF /HF-gs-font findfont [HFpt_w 0 0 HFpt_h 0 0] makefont def
+/Times-Roman /F-gs-font MF
+/F-gs-font 13 13 SF
+/#copies 1 def
+% Pagedevice definitions:
+gs_languagelevel 1 gt {
+  <<
+    /PageSize [595 842] 
+  >> setpagedevice
+} if
+%%BeginResource: procset Enscript-Header-simple 1.6 5
+
+/do_header {	% print default simple header
+  gsave
+    d_header_x d_header_y HFpt_h 3 div add translate
+
+    HF setfont
+    user_header_p {
+      5 0 moveto user_header_left_str show
+
+      d_header_w user_header_center_str stringwidth pop sub 2 div
+      0 moveto user_header_center_str show
+
+      d_header_w user_header_right_str stringwidth pop sub 5 sub
+      0 moveto user_header_right_str show
+    } {
+      5 0 moveto fname show
+      45 0 rmoveto fmodstr show
+      45 0 rmoveto pagenumstr show
+    } ifelse
+
+  grestore
+} def
+%%EndResource
+/d_page_w 559 def
+/d_page_h 770 def
+/d_header_x 0 def
+/d_header_y 755 def
+/d_header_w 559 def
+/d_header_h 15 def
+/d_footer_x 0 def
+/d_footer_y 0 def
+/d_footer_w 559 def
+/d_footer_h 0 def
+/d_output_w 559 def
+/d_output_h 755 def
+/cols 1 def
+%%EndSetup
+%%Page: (1-2) 1
+%%BeginPageSetup
+_S
+90 rotate
+36 -18 translate
+%Page: (1) 1
+%BeginPageSetup
+_S
+% N-up sub-page 1/2
+0 -559 translate
+0.679785 dup scale
+/pagenum 1 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (1) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(   MODULE vmec_mod) s
+5 697 M
+(  character\(len=256\),PRIVATE::fname) s
+5 683 M
+(  integer\(8\),PRIVATE::mcObj=0     ! mcObj array holds the address of C++ object) s
+5 655 M
+(  real\(8\),PRIVATE :: dR=0.02,dZ=0.02,dFi=2,epsTrunc=1d-8,epsA=1d-5,pi) s
+5 641 M
+(  integer\(4\),PRIVATE :: FALSE=0,TRUE=1) s
+5 613 M
+(  CONTAINS) s
+5 599 M
+(  ) s
+5 585 M
+(  !************************************************************) s
+5 571 M
+(  ! returns .TRUE. if loaded ) s
+5 557 M
+(  SUBROUTINE bc_setMeshParm\(dR_,dZ_,dFi_,epsA_,epsTrunc_\)) s
+5 543 M
+(  real\(8\),INTENT\(in\):: dR_,dZ_,dFi_,epsA_,epsTrunc_) s
+5 529 M
+(    dR = dR_   ! in m) s
+5 515 M
+(    dZ = dZ_   ! in m) s
+5 501 M
+(    dFi = dFi_ ! in degree) s
+5 487 M
+(    epsA = epsA_    ! in m) s
+5 473 M
+(    epsTrunc = epsTrunc_) s
+5 459 M
+(    pi = 4*datan\(1.d0\)) s
+5 445 M
+(  END SUBROUTINE bc_setMeshParm) s
+5 417 M
+(  !************************************************************) s
+5 403 M
+(  ! returns .TRUE. if loaded ) s
+5 389 M
+(  FUNCTION bc_load\(filename\) RESULT\(ok\) ! load Boozer file) s
+5 375 M
+(  CHARACTER\(*\), INTENT\(in\) :: filename) s
+5 361 M
+(    real\(8\) mcM3Dcyl2s) s
+5 347 M
+(    integer\(4\) mcload,mcCreateMeshUsingSymmetry,MCwriteMesh,mcIsMeshOK) s
+5 333 M
+(    external mcload,mcfree,mctruncate,mcsetAccuracy,mcsemiboozer2cyl) s
+5 319 M
+(    external mcCreateMeshUsingSymmetry,mcM3DgetdBcyl,MCwriteMesh,mcM3Dcyl2s) s
+5 305 M
+(    integer\(4\) i) s
+5 291 M
+(    logical ok) s
+5 263 M
+(    pi = 4*datan\(1.d0\)) s
+5 235 M
+(    ok = .FALSE.) s
+5 221 M
+(    if\(mcload \(mcObj,filename\)==FALSE \) return ! return .FALSE. if error) s
+5 193 M
+(    !************************************************************) s
+5 179 M
+(    !Create 3dMesh  ) s
+5 165 M
+(    call mctruncate   \(mcObj,epsTrunc\)      ! truncate spectrum) s
+5 151 M
+(    call mcsetAccuracy\(mcObj,epsA\)          ! set accuracy of coordinate transformation) s
+5 123 M
+(    IF \(mcIsMeshOK\(mcObj\) /= TRUE\) THEN) s
+5 109 M
+(      i=mcCreateMeshUsingSymmetry\(mcObj,dR,dZ,dFi*pi/180\)   ! create mesh for whole machine) s
+5 95 M
+(      if\(i==FALSE\) return                    !return .FALSE. if error) s
+5 81 M
+(      i=MCwriteMesh\(mcObj,'savedmesh.bin4'\)  ! save for future use) s
+5 67 M
+(  !    print '\(a, I2// \)','MCwriteMesh =', i) s
+5 53 M
+(    ENDIF) s
+5 39 M
+(    ok = .TRUE.) s
+5 25 M
+(    fname = filename) s
+5 11 M
+(  END FUNCTION bc_load) s
+_R
+%Page: (2) 2
+%BeginPageSetup
+_S
+% N-up sub-page 2/2
+390 -559 translate
+0.679785 dup scale
+/pagenum 2 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (2) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 725 M
+(!iota) s
+5 711 M
+(  FUNCTION bc_iota\(s\) RESULT\(iota\)) s
+5 697 M
+(    REAL\(8\),INTENT\(in\)  :: s) s
+5 683 M
+(    REAL\(8\):: iota,mciota) s
+5 669 M
+(    external mciota) s
+5 655 M
+(    iota  = mciota\(mcObj,s\)   ) s
+5 641 M
+(   END FUNCTION bc_iota) s
+5 613 M
+(!d\(iota\)/ds) s
+5 599 M
+( FUNCTION bc_iotaPrime\(s\) RESULT\(iotaP\)) s
+5 585 M
+(    REAL\(8\),INTENT\(in\)  :: s) s
+5 571 M
+(    REAL\(8\):: iota,mcIotaprime,iotaP) s
+5 557 M
+(    external mcIota) s
+5 543 M
+(    iotaP = mcIotaPrime\(mcObj,s\)) s
+5 529 M
+(   END FUNCTION bc_iotaPrime) s
+5 501 M
+(!toroidal flux ) s
+5 487 M
+(  FUNCTION bc_torflux\(s\) RESULT\(torflux\)) s
+5 473 M
+(    REAL\(8\),INTENT\(in\)  :: s) s
+5 459 M
+(    REAL\(8\):: torflux,mctorflux) s
+5 445 M
+(    external mctorflux) s
+5 431 M
+(    torflux  = mctorflux\(mcObj,s\)   ) s
+5 417 M
+(   END FUNCTION bc_torflux) s
+5 389 M
+(!minor radius) s
+5 375 M
+(  FUNCTION bc_rminor\(\) RESULT\(a\)) s
+5 361 M
+(    REAL\(8\):: a,mcrminor) s
+5 347 M
+(    external mcrminor) s
+5 333 M
+(    a = mcrminor\(mcObj\)) s
+5 319 M
+(  END FUNCTION bc_rminor) s
+5 291 M
+( !************************************************************) s
+5 277 M
+(  ! Function retuns the fraction of trapped particles  at flux surface  s ) s
+5 263 M
+(  ! Input:) s
+5 249 M
+(  !  s - normalized toroidal flux, ) s
+5 235 M
+(  ! Output: f_trap\(s\)) s
+5 221 M
+( ) s
+5 207 M
+(  FUNCTION bc_ft\(s\) RESULT\(ft\)) s
+5 193 M
+(    REAL\(8\),INTENT\(in\)  :: s) s
+5 179 M
+(    REAL\(8\):: ft,MCFTRAPPED) s
+5 165 M
+(    external MCFTRAPPED) s
+5 151 M
+(    ft = MCFTRAPPED\(mcObj,s\)   ) s
+5 137 M
+(   END FUNCTION bc_ft  ) s
+5 109 M
+(  !************************************************************) s
+5 95 M
+(  ! Function retuns the flux surface label s for the given point cyl) s
+5 81 M
+(  ! Input:) s
+5 67 M
+(  !  cyl  - array of size 3 containing cylindrical coordinate of the point) s
+5 53 M
+(  ! Output:) s
+5 39 M
+(  !  s - normalized toroidal flux, ) s
+5 25 M
+(  !       s > 1 if the point cyl lies outside the last closed surface ) s
+5 11 M
+(  FUNCTION bc_cyl2s\(cyl\) RESULT\(s\)) s
+_R
+_R
+S
+%%Page: (3-4) 2
+%%BeginPageSetup
+_S
+90 rotate
+36 -18 translate
+%Page: (3) 3
+%BeginPageSetup
+_S
+% N-up sub-page 1/2
+0 -559 translate
+0.679785 dup scale
+/pagenum 3 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (3) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(    REAL\(8\),INTENT\(in\)  :: cyl\(3\)) s
+5 725 M
+(    REAL\(8\):: s,mcM3Dcyl2s) s
+5 711 M
+(    external mcM3Dcyl2s) s
+5 697 M
+(    s  = mcM3Dcyl2s\(mcObj,cyl\)   ! function returns flux label at the point cyl) s
+5 683 M
+(   END FUNCTION bc_cyl2s) s
+5 655 M
+(  !*********************************************************************) s
+5 641 M
+(  ! Function retuns the cylindrical coordinate for the given point in) s
+5 627 M
+(  ! coordinate \(s,theta_boozer,phi_cylindrical\)) s
+5 613 M
+(  ! Input:) s
+5 599 M
+(  !  boozer  - array of size 3 containing \(s,theta_boozer,phi_cylindrical\)) s
+5 585 M
+(  !            coordinate of the point) s
+5 571 M
+(  ! Output:) s
+5 557 M
+(  !  cyl  - array of size 3 containing cylindrical coordinate of the point) s
+5 543 M
+(  !  s - normalized toroidal flux, ) s
+5 529 M
+(  !       s > 1 if the point cyl lies outside the last closed surface ) s
+5 515 M
+( ! FUNCTION bc_booz2cyl\(boozer\) RESULT\(cyl\)) s
+5 501 M
+( !   REAL\(8\),INTENT\(in\)  :: boozer\(3\)) s
+5 487 M
+( !   REAL\(8\):: cyl\(3\)) s
+5 473 M
+( !   external mcsemiboozer2cyl) s
+5 459 M
+( !   call mcsemiboozer2cyl\(mcObj,boozer,cyl\)    ! cyl is output ) s
+5 445 M
+( ! END FUNCTION bc_booz2cyl) s
+5 403 M
+(  !*********************************************************************) s
+5 389 M
+(  ! Function retuns the magnetic field vector B and it derivatives ) s
+5 375 M
+(  ! for the given point cyl) s
+5 361 M
+(  ! Input:) s
+5 347 M
+(  !  cyl  - array of size 3 containing cylindrical coordinate of the point) s
+5 333 M
+(  ! Output:) s
+5 319 M
+(  !  B - array with the components of magnetic field in Tesla) s
+5 305 M
+(  SUBROUTINE bc_Bfield\(cyl,B,dBdr,dBdfir,dBdz\)) s
+5 291 M
+(    REAL\(8\), INTENT\(in\)  :: cyl\(3\)) s
+5 277 M
+(    REAL\(8\), INTENT\(out\) :: B\(3\)      ! cylindrical coordinates of B = \(Br, Bfi, Bz\)) s
+5 263 M
+(    REAL\(8\), INTENT\(out\) :: dBdr\(3\)   ! dB/dr, where dBdr\(1\)=dBr/dr, dBdr\(2\)=dBfi/dr, dBdr\(3\)=dBz/d) s
+5 249 M
+(r) s
+5 235 M
+(    REAL\(8\), INTENT\(out\) :: dBdfir\(3\) ! dB/dfi/r) s
+5 221 M
+(    REAL\(8\), INTENT\(out\) :: dBdz\(3\)   ! dB/dz) s
+5 207 M
+(    external mcM3DgetdBcyl) s
+5 179 M
+(    call mcM3DgetdBcyl\(mcObj,cyl,B,dBdr,dBdfir,dBdz\) ! B,dBdr,dBdfir,dBdz are at the point cyl) s
+5 165 M
+(  END SUBROUTINE bc_Bfield) s
+5 137 M
+(  !**********************************************************************************) s
+5 123 M
+(*****) s
+5 109 M
+(  ! Function retuns the cylindrical coordinate of the point given in) s
+5 95 M
+(  ! magnetic coordinate \(s,theta,phi\)) s
+5 81 M
+(  ! Input:) s
+5 67 M
+(  !  magn  - array of size 3 containing magnetic) s
+5 53 M
+(  !            coordinate \(s,theta,phi\) of the point) s
+5 39 M
+(  ! Output:) s
+5 25 M
+(  !  cyl  - array of size 3 containing cylindrical coordinate of the point) s
+5 11 M
+(  FUNCTION bc_magn2cyl\(magn\) RESULT\(cyl\)) s
+_R
+%Page: (4) 4
+%BeginPageSetup
+_S
+% N-up sub-page 2/2
+390 -559 translate
+0.679785 dup scale
+/pagenum 4 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (4) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(    REAL\(8\),INTENT\(in\) :: magn\(3\)) s
+5 725 M
+(    REAL\(8\):: cyl\(3\)) s
+5 711 M
+(    external mcmag2cyl) s
+5 697 M
+(    call mcmag2cyl\(mcObj,magn,cyl\)    ! cyl is output ) s
+5 683 M
+(  END FUNCTION bc_magn2cyl) s
+5 655 M
+( !***********************************************************************************) s
+5 641 M
+(****) s
+5 627 M
+(  ! Retuns BOOZER coors \(s,theta,zeta\) given CYLINDRICAL coords \(r,phi,zeta\)) s
+5 613 M
+(  ! Input:) s
+5 599 M
+(  !  magn  - array of size 3 containing magnetic) s
+5 585 M
+(  !            coordinate \(s,theta,phi\) of the point) s
+5 571 M
+(  ! Output:) s
+5 557 M
+(  !  cyl  - array of size 3 containing cylindrical coordinate of the point) s
+5 543 M
+(  FUNCTION bc_cyl2mag\(cyl\) RESULT\(boo\)) s
+5 529 M
+(    REAL\(8\),INTENT\(in\) :: cyl\(3\)) s
+5 515 M
+(    REAL\(8\):: boo\(3\),dum\(3\)) s
+5 501 M
+(    external mccyl2mag) s
+5 487 M
+(    call mccyl2mag\(mcObj,cyl,boo,dum\)    ) s
+5 473 M
+(  END FUNCTION bc_cyl2mag) s
+5 445 M
+(  !*********************************************************************) s
+5 431 M
+(  SUBROUTINE bc_free\(\)) s
+5 417 M
+(    external mcfree) s
+5 403 M
+(    call mcfree\(mcObj\)         ! destroy C++ object and free memory) s
+5 389 M
+(  END SUBROUTINE bc_free) s
+5 361 M
+(!==========================================================================) s
+5 347 M
+(=============) s
+5 319 M
+(  SUBROUTINE field_vmec\(rrr,ppp,zzz,Brad,Bphi,Bzet,dBraddr,dBraddp,dBraddz,&) s
+5 305 M
+(     &dBphidr,dBphidp,dBphidz,dBzetdr,dBzetdp,dBzetdz\)) s
+5 277 M
+(  USE type_mod  ) s
+5 263 M
+(  USE specifications_mod, ONLY:sign_of_Bp) s
+5 249 M
+(   ) s
+5 235 M
+(  REAL\(DP\), INTENT\(IN\) :: rrr,ppp,zzz) s
+5 221 M
+(  REAL\(DP\), INTENT\(OUT\) :: Brad,Bphi,Bzet,dBraddr,dBraddp,dBraddz) s
+5 207 M
+(  REAL\(DP\), INTENT\(OUT\) :: dBphidr,dBphidp,dBphidz,dBzetdr,dBzetdp,dBzetdz) s
+5 193 M
+(  REAL\(DP\), DIMENSION\(3\) :: cyl,Bout,dBdrout,dBdfiout,dBdzout ) s
+5 179 M
+(  INTEGER :: s_ ) s
+5 151 M
+(    cyl\(1\)=rrr ; cyl\(2\)=ppp ; cyl\(3\)=zzz) s
+5 123 M
+(!print *,'test',bc_cyl2s\(cyl\)) s
+5 95 M
+(    CALL bc_Bfield\(cyl,Bout,dBdrout,dBdfiout,dBdzout\)) s
+5 81 M
+(    sign_of_Bp=INT\(Bout\(2\)/ABS\(Bout\(2\)\)\)) s
+5 67 M
+(    s_=1) s
+5 39 M
+(    Brad=s_*Bout\(1\) ; Bphi=s_*Bout\(2\) ; Bzet=s_*Bout\(3\)) s
+5 25 M
+(    dBraddr=s_*dBdrout\(1\)  ; dBphidr=s_*dBdrout\(2\)  ; dBzetdr=s_*dBdrout\(3\)) s
+5 11 M
+(    dBraddp=s_*dBdfiout\(1\)*rrr ; dBphidp=s_*dBdfiout\(2\)*rrr ; dBzetdp=s_*dBdfiout\(3\)*rrr) s
+_R
+_R
+S
+%%Page: (5-6) 3
+%%BeginPageSetup
+_S
+90 rotate
+36 -18 translate
+%Page: (5) 5
+%BeginPageSetup
+_S
+% N-up sub-page 1/2
+0 -559 translate
+0.679785 dup scale
+/pagenum 5 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (5) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(    dBraddz=s_*dBdzout\(1\)  ; dBphidz=s_*dBdzout\(2\)  ; dBzetdz=s_*dBdzout\(3\) ) s
+5 711 M
+(   END SUBROUTINE field_vmec) s
+5 683 M
+(!==========================================================================) s
+5 669 M
+(================) s
+5 641 M
+(SUBROUTINE vmec_data\(sss,ttt,ppp,c11_vmec,q_vmec,alpha_vmec,shat_vmec,ftrap,lgrads,lrefs\)) s
+5 613 M
+(    USE type_mod  ) s
+5 599 M
+(    USE lagrange_mod) s
+5 585 M
+(    USE specifications_mod,ONLY:b0,sign_of_Bp,qpr,profw7,grads,refs,&) s
+5 571 M
+(                          &vmec_file, table_tag, vmec_dir) s
+5 543 M
+(    REAL\(DP\), INTENT\(INOUT\) :: sss,ttt,ppp !\(rho,theta,phi\)) s
+5 529 M
+(    REAL\(DP\), INTENT\(OUT\) :: alpha_vmec,shat_vmec,c11_vmec,q_vmec,ftrap   ) s
+5 515 M
+(    REAL\(DP\), DIMENSION\(3\), INTENT\(OUT\) :: lgrads, lrefs  ) s
+5 487 M
+(    CHARACTER \(len=256\) fname) s
+5 473 M
+(    REAL\(DP\),DIMENSION\(:,:\),ALLOCATABLE :: vmec_in,cyl) s
+5 459 M
+(    REAL\(DP\),DIMENSION\(:\),ALLOCATABLE :: s,vmec_in_aux,torflux) s
+5 445 M
+(    REAL\(DP\) :: sj,qj,qnew,fj) s
+5 431 M
+(    REAL\(DP\), DIMENSION\(3\) :: cylj,in,aux) s
+5 417 M
+(    INTEGER :: j) s
+5 403 M
+(    INTEGER, PARAMETER :: Ntable=101) s
+5 389 M
+(    LOGICAL :: first=.TRUE.) s
+5 347 M
+(    fname = trim\(vmec_dir\)//'/'//trim\(vmec_file\) ) s
+5 319 M
+( IF \(first\) THEN) s
+5 305 M
+(    WRITE\(*,"\(/,2X,A,/\)"\) '=========================== Preparing flux tube =============) s
+5 291 M
+(===============') s
+5 277 M
+(    IF \(bc_load\(fname\) .EQV. .FALSE. \) STOP 'VMEC file not found') s
+5 263 M
+(    CALL bc_setMeshParm\(0.01d0,0.01d0,.4d0,1d-5,1d-15\) !grid spacing) s
+5 235 M
+(!Produce table of s,r,q for interpolation) s
+5 221 M
+( ) s
+5 207 M
+(    OPEN\(88,file='../int/shear_'//trim\(vmec_file\)//'_' &) s
+5 193 M
+(     &    //trim\(table_tag\),ACTION='write'\)) s
+5 165 M
+(      DO j=1,Ntable) s
+5 151 M
+(      sj=\(j-1\)/100.) s
+5 137 M
+(      in\(1\)=sj ; in\(2\)=0.d0 ; in\(3\)=0.d0) s
+5 123 M
+(      cylj=bc_magn2cyl\(in\)) s
+5 109 M
+(      qj=1./bc_iota\(sj\)) s
+5 95 M
+(      fj=bc_ft\(sj\)) s
+5 81 M
+(      WRITE\(88,'\(4F13.8\)'\) sj,cylj\(1\),qj,fj) s
+5 67 M
+(      ENDDO) s
+5 39 M
+(  CLOSE\(88\)) s
+5 11 M
+(first=.FALSE.) s
+_R
+%Page: (6) 6
+%BeginPageSetup
+_S
+% N-up sub-page 2/2
+390 -559 translate
+0.679785 dup scale
+/pagenum 6 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (6) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(ENDIF) s
+5 711 M
+(!Define normalizing length) s
+5 683 M
+(     alpha_vmec=bc_rminor\(\) ) s
+5 655 M
+(!Calculate fraction of trapped particles) s
+5 641 M
+(     ftrap=bc_ft\(sss\)) s
+5 613 M
+(!Define B0) s
+5 585 M
+(     b0=bc_torflux\(1.d0\)/Pi/alpha_vmec**2) s
+5 557 M
+(!Define q) s
+5 529 M
+(    q_vmec=1./bc_iota\(sss\)) s
+5 501 M
+(CALL vmec_shat\(sss,shat_vmec\)) s
+5 473 M
+(CALL vmec_c11\(sss,c11_vmec\)) s
+5 445 M
+(if \(profw7\) then) s
+5 431 M
+(CALL gradw7\(sss,lgrads,lrefs\)) s
+5 417 M
+(else) s
+5 403 M
+(lgrads=0.0) s
+5 389 M
+(endif) s
+5 361 M
+(grads=lgrads ; refs=lrefs) s
+5 333 M
+(!Redefine sss to be the r-cylindrical) s
+5 319 M
+(!ppp to be the phi-cylindrical) s
+5 305 M
+(!and ttt to be the z-cylindrical ) s
+5 277 M
+(    in\(1\)=sss ; in\(2\)=ttt ; in\(3\)=ppp) s
+5 263 M
+(    aux=bc_magn2cyl\(in\)) s
+5 249 M
+(    sss=aux\(1\)) s
+5 235 M
+(    ppp=aux\(2\)) s
+5 221 M
+(    ttt=aux\(3\)) s
+5 193 M
+(!------------) s
+5 179 M
+(CONTAINS) s
+5 165 M
+(!-----------) s
+5 123 M
+(SUBROUTINE gradw7\(sin,omt,ref\)) s
+5 95 M
+(    REAL\(DP\), INTENT\(IN\) :: sin) s
+5 81 M
+(    REAL\(DP\), DIMENSION\(3\), INTENT\(OUT\) :: omt,ref) s
+5 67 M
+(    integer,parameter::ntable=51) s
+5 53 M
+(    REAL\(DP\),DIMENSION\(Ntable\) :: sdat,cdat,tidat,tedat,ndat) s
+5 39 M
+(    INTEGER :: stat=0,k) s
+5 25 M
+(    INTEGER, PARAMETER :: mp=4) s
+5 11 M
+(    REAL\(DP\), DIMENSION\(mp\) :: ssten,csten,tisten,testen,nsten) s
+_R
+_R
+S
+%%Page: (7-8) 4
+%%BeginPageSetup
+_S
+90 rotate
+36 -18 translate
+%Page: (7) 7
+%BeginPageSetup
+_S
+% N-up sub-page 1/2
+0 -559 translate
+0.679785 dup scale
+/pagenum 7 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (7) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(    INTEGER, DIMENSION\(mp\) :: ind) s
+5 725 M
+(    REAL\(DP\) :: polylag,poly1x,iota_int,ds,dsmin1,sqrtsin,slope) s
+5 683 M
+(    OPEN\(UNIT=62, FILE='../inp/prof_w7.dat', STATUS="OLD", ACTION="READ", ERR=10\)) s
+5 669 M
+(    DO j=1,Ntable) s
+5 655 M
+(       READ\(62,*\) sdat\(j\),tidat\(j\),tedat\(j\),ndat\(j\)) s
+5 641 M
+(    ENDDO) s
+5 627 M
+(    CLOSE\(62\)) s
+5 599 M
+(!NB: The radial label must be sqrt\(s\) ) s
+5 571 M
+(    ds=sdat\(2\)-sdat\(1\)) s
+5 557 M
+(    dsmin1=1./ds) s
+5 543 M
+(    sqrtsin=sqrt\(sin\)) s
+5 515 M
+(    CALL indef\(sqrtsin,0.d0,dsmin1,Ntable,ind\)) s
+5 487 M
+(    DO k=1,mp) s
+5 473 M
+(       ssten\(k\)=\(ind\(k\)-1\)*ds) s
+5 459 M
+(       tisten\(k\)=tidat\(ind\(k\)\)) s
+5 445 M
+(       testen\(k\)=tedat\(ind\(k\)\)) s
+5 431 M
+(       nsten\(k\)=ndat\(ind\(k\)\)) s
+5 417 M
+(    ENDDO) s
+5 389 M
+(!Determine Ti gradient) s
+5 375 M
+(CALL plag1d\(sqrtsin,tisten,dsmin1,ssten,polylag,poly1x\)) s
+5 361 M
+(slope=-poly1x/polylag) s
+5 347 M
+(ref\(1\)=polylag) s
+5 333 M
+(omt\(1\)=slope) s
+5 305 M
+(!Determine Te gradient) s
+5 291 M
+(CALL plag1d\(sqrtsin,testen,dsmin1,ssten,polylag,poly1x\)) s
+5 277 M
+(slope=-poly1x/polylag) s
+5 263 M
+(ref\(2\)=polylag) s
+5 249 M
+(omt\(2\)=slope) s
+5 221 M
+(!Determine n gradient) s
+5 207 M
+(CALL plag1d\(sqrtsin,nsten,dsmin1,ssten,polylag,poly1x\)) s
+5 193 M
+(slope=-poly1x/polylag) s
+5 179 M
+(ref\(3\)=polylag) s
+5 165 M
+(omt\(3\)=slope) s
+5 137 M
+(RETURN) s
+5 123 M
+(10 PRINT *, 'STOP! No profile file prof_w7.dat found in the inp directory!') s
+5 109 M
+(stop) s
+5 81 M
+(END SUBROUTINE) s
+135 81 M
+(gradw7) s
+5 53 M
+(!---------------------------------------------------------------------------!) s
+5 39 M
+(!==========================================================================) s
+5 25 M
+(=!) s
+_R
+%Page: (8) 8
+%BeginPageSetup
+_S
+% N-up sub-page 2/2
+390 -559 translate
+0.679785 dup scale
+/pagenum 8 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (8) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(SUBROUTINE vmec_shat\(sin,shat\)) s
+5 711 M
+(    REAL\(DP\), INTENT\(IN\) :: sin) s
+5 697 M
+(    REAL\(DP\), INTENT\(OUT\) :: shat) s
+5 683 M
+(    REAL\(DP\),DIMENSION\(Ntable\) :: sdat,cdat,qdat) s
+5 669 M
+(    INTEGER :: stat=0,k) s
+5 655 M
+(    INTEGER, PARAMETER :: mp=4) s
+5 641 M
+(    REAL\(DP\), DIMENSION\(mp\) :: ssten,csten,qsten) s
+5 627 M
+(    INTEGER, DIMENSION\(mp\) :: ind) s
+5 613 M
+(    REAL\(DP\) :: polylag,poly1x,iota_int,ds,dsmin1) s
+5 585 M
+(    OPEN\(UNIT=32, FILE='../int/shear_'//trim\(vmec_file\)//'_'//trim\(table_tag\),&) s
+5 571 M
+(               &STATUS="OLD", ACTION="READ", ERR=10\)) s
+5 557 M
+(    DO j=1,Ntable) s
+5 543 M
+(       READ\(32,*\) sdat\(j\),cdat\(j\),qdat\(j\)) s
+5 529 M
+(    ENDDO) s
+5 501 M
+(    CLOSE\(32\)) s
+5 473 M
+(!Determine q) s
+5 445 M
+(    ds=sdat\(2\)-sdat\(1\)) s
+5 431 M
+(    dsmin1=1./ds) s
+5 403 M
+(    CALL indef\(sin,0.d0,dsmin1,Ntable,ind\)) s
+5 375 M
+(    DO k=1,mp) s
+5 361 M
+(       ssten\(k\)=\(ind\(k\)-1\)*ds) s
+5 347 M
+(       qsten\(k\)=qdat\(ind\(k\)\)) s
+5 333 M
+(    ENDDO) s
+5 305 M
+(    CALL plag1d\(sin,qsten,dsmin1,ssten,polylag,poly1x\)) s
+5 291 M
+( ) s
+5 277 M
+(!Determine shat) s
+5 249 M
+(!    shat=2.*sin/polylag*poly1x) s
+5 235 M
+(!    qpr=poly1x) s
+5 221 M
+(    ) s
+5 207 M
+(    shat=-2*sin*bc_iotaprime\(sin\)/bc_iota\(sin\) !yury) s
+5 193 M
+(    ) s
+5 179 M
+(   ) s
+5 165 M
+(    RETURN) s
+5 151 M
+(10 PRINT *, '!No iota.dat link found in input directory. q0,shat will not be calculated!') s
+5 137 M
+(  ) s
+5 123 M
+( ) s
+5 109 M
+(END SUBROUTINE vmec_shat) s
+5 81 M
+(!----------------------------------------------------------------------) s
+5 53 M
+(SUBROUTINE vmec_c11\(sin_,c11\)) s
+5 25 M
+(    REAL\(DP\), INTENT\(IN\) :: sin_) s
+5 11 M
+(    REAL\(DP\), INTENT\(OUT\) :: c11) s
+_R
+_R
+S
+%%Page: (9-10) 5
+%%BeginPageSetup
+_S
+90 rotate
+36 -18 translate
+%Page: (9) 9
+%BeginPageSetup
+_S
+% N-up sub-page 1/2
+0 -559 translate
+0.679785 dup scale
+/pagenum 9 def
+/fname (src/vmec_mod.F90) def
+/fdir (src) def
+/ftail (vmec_mod.F90) def
+% User defined strings:
+/fmodstr (Wed Aug 31 12:38:41 2011) def
+/pagenumstr (9) def
+/user_header_p false def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 739 M
+(    REAL\(DP\),DIMENSION\(Ntable\) :: sdat,rdat,qdat) s
+5 725 M
+(    INTEGER :: stat=0,k) s
+5 711 M
+(    INTEGER, PARAMETER :: mp=4) s
+5 697 M
+(    REAL\(DP\), DIMENSION\(mp\) :: ssten,rsten,qsten) s
+5 683 M
+(    INTEGER, DIMENSION\(mp\) :: ind) s
+5 669 M
+(    REAL\(DP\) :: polylag,poly1x,iota_int,ds,dsmin1) s
+5 641 M
+(   OPEN\(UNIT=32, FILE='../int/shear_'//trim\(vmec_file\)//'_'//trim\(table_tag\),&) s
+5 627 M
+(              & STATUS="OLD", ACTION="READ", ERR=10\)) s
+5 613 M
+(    DO j=1,Ntable) s
+5 599 M
+(       READ\(32,*\) sdat\(j\),rdat\(j\),qdat\(j\)) s
+5 585 M
+(    ENDDO) s
+5 557 M
+(    CLOSE\(32\)) s
+5 529 M
+(    ds=sdat\(2\)-sdat\(1\)) s
+5 515 M
+(    dsmin1=1./ds) s
+5 487 M
+(    CALL indef\(sin_,0.d0,dsmin1,Ntable,ind\)) s
+5 459 M
+(    DO k=1,mp) s
+5 445 M
+(       ssten\(k\)=\(ind\(k\)-1\)*ds) s
+5 431 M
+(       rsten\(k\)=rdat\(ind\(k\)\)) s
+5 417 M
+(    ENDDO) s
+5 389 M
+(    CALL plag1d\(sin_,rsten,dsmin1,ssten,polylag,poly1x\)) s
+5 375 M
+( ) s
+5 361 M
+(!Determine c11) s
+5 333 M
+(    c11=.5*alpha_vmec/SQRT\(sin_\)/poly1x) s
+5 305 M
+(    RETURN) s
+5 291 M
+(10 PRINT *, '!No shear file in directory int found!') s
+5 263 M
+(  ) s
+5 249 M
+( ) s
+5 235 M
+(END SUBROUTINE vmec_c11) s
+5 207 M
+(!------------------------) s
+5 179 M
+( END SUBROUTINE vmec_data) s
+5 151 M
+(!==========================================================================) s
+5 137 M
+(==) s
+5 95 M
+( END MODULE vmec_mod) s
+_R
+_R
+S
+%%Trailer
+%%Pages: 9
+%%DocumentNeededResources: font Times-Roman Courier-Bold 
+%%EOF

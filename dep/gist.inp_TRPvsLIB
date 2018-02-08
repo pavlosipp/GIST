@@ -1,0 +1,25 @@
+&coordinates
+ pest=.f.
+ boozer=.t.
+/
+
+&in_out
+ global_y=.f.
+ vmec_dir='../inp'
+ vmec_file='wout_W7X20a'
+ out_tag='test'
+gs2=.t.
+terpsichore=.t.
+ initialize=.f.
+/
+
+&setup
+surf=31  !24 for W7-AS&X, 23 for NCSX, 31 for TOK
+s0=.49
+ alpha0=0.
+ alpha0_start=-1.0472    
+ alpha0_end=1.0472      
+ nalpha0=128 
+ pol_turns=1. 
+ nz0=128
+/

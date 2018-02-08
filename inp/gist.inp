@@ -1,0 +1,21 @@
+&coordinates
+ boozer=.t.
+/
+
+&in_out
+ global=.t.
+ vmec_dir='../inp'
+ vmec_file='wout_tok'
+ out_tag='fake' 
+ fake3d=.f.
+ /
+
+&setup
+ x0min=0.5
+ x0max=0.7
+ nsurf=5
+ nalpha0=64
+ alpha0=0.
+ pol_turns=1 
+ nz0=128
+/

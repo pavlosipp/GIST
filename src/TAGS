@@ -1,0 +1,126 @@
+
+combal_module.f,0
+
+combal_alloc.f,51
+        subroutine combal_alloccombal_alloc5,221
+
+tprb_modules.f,0
+
+eqintrp_08_ideal.f,134
+        subroutine EQINTRP_08_iEQINTRP_08_i1,0
+      subroutine spline spline326,11005
+      real function seval(seval429,19348
+
+coef.f,35
+        subroutine coef coef2,80
+
+datain.f,39
+        subroutine datain datain2,80
+
+driver.f,39
+        subroutine driver driver2,80
+
+equin.f,37
+        subroutine equin equin2,80
+
+isamax.f,34
+      function isamax isamax1,0
+
+odeint.f,39
+        subroutine odeint odeint2,80
+
+prepar.f,38
+        subroutine prepar prepar1,0
+
+second.f,37
+      subroutine second(second2,79
+
+solver.f,39
+        subroutine solver solver2,80
+
+bophys.f,38
+      subroutine bophys bophys5,217
+
+bootps.f,38
+      subroutine bootsj(bootsj4,222
+
+cospol.f,38
+      subroutine cospol(cospol5,217
+
+eqinvm.f,37
+      subroutine EQINVMEQINVM6,230
+
+extint.f,38
+      subroutine extint extint5,217
+
+intext.f,38
+      subroutine intext intext5,219
+
+lamcal.f,38
+      subroutine lamcal(lamcal5,219
+
+lamnew.f,38
+      subroutine LAMNEW(LAMNEW5,217
+
+lgikvm.f,38
+      subroutine LGIKVM(LGIKVM5,217
+
+mercie.f,38
+      subroutine mercie(mercie4,222
+
+metric.f,38
+      subroutine METRIC(METRIC5,218
+
+mtaskb.f,38
+      subroutine mtaskb(mtaskb5,219
+
+mtaskl.f,38
+      subroutine mtaskl(mtaskl5,219
+
+ploteq.f,38
+      subroutine PLOTEQ(PLOTEQ5,217
+
+saxpy.f,34
+      SUBROUTINE SAXPY(SAXPY1,0
+
+sdot.f,30
+      function sdot sdot1,0
+
+sgedi.f,35
+      subroutine SGEDI(SGEDI2,79
+
+sgefa.f,35
+      subroutine SGEFA(SGEFA2,79
+
+sgesl.f,35
+      subroutine SGESL(SGESL2,79
+
+sscal.f,35
+      SUBROUTINE  SSCAL(SSCAL1,0
+
+sswap.f,35
+      SUBROUTINE  SSWAP SSWAP1,0
+
+tprall_bal.f,45
+      subroutine TPRALL_BALTPRALL_BAL5,221
+
+trgfun.f,38
+      subroutine trgfun(trgfun5,219
+
+veqrec.f,38
+      subroutine veqrec(veqrec5,217
+
+vforce.f,38
+      subroutine vforce vforce5,217
+
+vmtobo.f,38
+      subroutine vmtobo vmtobo5,217
+
+xminv.f,35
+      subroutine XMINV(XMINV2,79
+
+specifications_mod.f,0
+
+type_mod.f,0
+
+trabal.f,0

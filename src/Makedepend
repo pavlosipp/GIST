@@ -1,0 +1,74 @@
+FOBJ=OBJ/combal_module.o OBJ/combal_alloc.o OBJ/tprb_modules.o OBJ/eqintrp_08_ideal.o OBJ/coef.o OBJ/datain.o OBJ/driver.o OBJ/equin.o OBJ/isamax.o OBJ/odeint.o OBJ/prepar.o OBJ/second.o OBJ/solver.o OBJ/bophys.o OBJ/bootps.o OBJ/cospol.o OBJ/eqinvm.o OBJ/extint.o OBJ/intext.o OBJ/lamcal.o OBJ/lamnew.o OBJ/lgikvm.o OBJ/mercie.o OBJ/metric.o OBJ/mtaskb.o OBJ/mtaskl.o OBJ/ploteq.o OBJ/saxpy.o OBJ/sdot.o OBJ/sgedi.o OBJ/sgefa.o OBJ/sgesl.o OBJ/sscal.o OBJ/sswap.o OBJ/tprall_bal.o OBJ/trgfun.o OBJ/veqrec.o OBJ/vforce.o OBJ/vmtobo.o OBJ/xminv.o OBJ/type_mod.o OBJ/util_mod.o OBJ/specifications_mod.o OBJ/lagrange_mod.o OBJ/field_d3d_mod.o OBJ/field_mod.o OBJ/field_nstx_mod.o OBJ/load_mod.o OBJ/tracer_mod.o OBJ/rk5_mod.o OBJ/spline5rz.o OBJ/field_textor.o OBJ/field_tok.o OBJ/rhs.o OBJ/rhs1.o OBJ/output_mod.o OBJ/UtilCDF.o OBJ/WMPI.o OBJ/field_ncsx.o OBJ/field_w7x.o OBJ/vmec_mod.o OBJ/gs2_mod.o OBJ/precmod.o OBJ/geneyout_mod.o OBJ/benchmark.o OBJ/benchmark_mod.o OBJ/pest.o OBJ/fs_lib.o OBJ/gist.o 
+
+../bin/gist: $(FOBJ)
+	$(FC) -o $@ $(FFLAGS) $(LDFLAGS) $(FOBJ) $(LIBS)
+
+OBJ/combal_module.o : combal_module.f 
+OBJ/combal_alloc.o : combal_alloc.f OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/tprb_modules.o : tprb_modules.f 
+OBJ/eqintrp_08_ideal.o : eqintrp_08_ideal.f OBJ/specifications_mod.o 
+OBJ/coef.o : coef.f OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/datain.o : datain.f OBJ/specifications_mod.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/driver.o : driver.f OBJ/specifications_mod.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/equin.o : equin.f OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/isamax.o : isamax.f 
+OBJ/odeint.o : odeint.f OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/prepar.o : prepar.f OBJ/tprb_modules.o OBJ/specifications_mod.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/second.o : second.f 
+OBJ/solver.o : solver.f OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o 
+OBJ/bophys.o : bophys.f OBJ/specifications_mod.o 
+OBJ/bootps.o : bootps.f 
+OBJ/cospol.o : cospol.f 
+OBJ/eqinvm.o : eqinvm.f OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/specifications_mod.o 
+OBJ/extint.o : extint.f 
+OBJ/intext.o : intext.f 
+OBJ/lamcal.o : lamcal.f 
+OBJ/lamnew.o : lamnew.f 
+OBJ/lgikvm.o : lgikvm.f 
+OBJ/mercie.o : mercie.f OBJ/specifications_mod.o 
+OBJ/metric.o : metric.f 
+OBJ/mtaskb.o : mtaskb.f OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/specifications_mod.o 
+OBJ/mtaskl.o : mtaskl.f 
+OBJ/ploteq.o : ploteq.f OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/specifications_mod.o 
+OBJ/saxpy.o : saxpy.f 
+OBJ/sdot.o : sdot.f 
+OBJ/sgedi.o : sgedi.f 
+OBJ/sgefa.o : sgefa.f 
+OBJ/sgesl.o : sgesl.f 
+OBJ/sscal.o : sscal.f 
+OBJ/sswap.o : sswap.f 
+OBJ/tprall_bal.o : tprall_bal.f OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/specifications_mod.o OBJ/tprb_modules.o 
+OBJ/trgfun.o : trgfun.f 
+OBJ/veqrec.o : veqrec.f OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/tprb_modules.o OBJ/specifications_mod.o 
+OBJ/vforce.o : vforce.f 
+OBJ/vmtobo.o : vmtobo.f 
+OBJ/xminv.o : xminv.f 
+OBJ/type_mod.o : type_mod.F90 
+OBJ/util_mod.o : util_mod.F90 OBJ/type_mod.o 
+OBJ/specifications_mod.o : specifications_mod.F90 OBJ/type_mod.o 
+OBJ/lagrange_mod.o : lagrange_mod.F90 OBJ/type_mod.o 
+OBJ/field_d3d_mod.o : field_d3d_mod.F90 OBJ/lagrange_mod.o OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/field_mod.o : field_mod.F90 OBJ/specifications_mod.o OBJ/vmec_mod.o OBJ/type_mod.o 
+OBJ/field_nstx_mod.o : field_nstx_mod.F90 OBJ/lagrange_mod.o OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/load_mod.o : load_mod.F90 OBJ/vmec_mod.o OBJ/specifications_mod.o OBJ/UtilCDF.o 
+OBJ/tracer_mod.o : tracer_mod.F90 OBJ/lagrange_mod.o OBJ/field_mod.o OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/rk5_mod.o : rk5_mod.F90 OBJ/util_mod.o OBJ/type_mod.o 
+OBJ/spline5rz.o : spline5rz.F90 
+OBJ/field_textor.o : field_textor.F90 OBJ/specifications_mod.o OBJ/lagrange_mod.o OBJ/util_mod.o 
+OBJ/field_tok.o : field_tok.F90 OBJ/type_mod.o OBJ/specifications_mod.o OBJ/lagrange_mod.o 
+OBJ/rhs.o : rhs.F90 OBJ/field_mod.o OBJ/specifications_mod.o 
+OBJ/rhs1.o : rhs1.F90 OBJ/field_mod.o OBJ/specifications_mod.o 
+OBJ/output_mod.o : output_mod.F90 OBJ/vmec_mod.o OBJ/field_d3d_mod.o OBJ/benchmark_mod.o OBJ/benchmark.o OBJ/pest.o OBJ/UtilCDF.o OBJ/specifications_mod.o 
+OBJ/UtilCDF.o : UtilCDF.F90 OBJ/type_mod.o 
+OBJ/WMPI.o : WMPI.F90 OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/field_ncsx.o : field_ncsx.F90 OBJ/specifications_mod.o OBJ/lagrange_mod.o OBJ/util_mod.o 
+OBJ/field_w7x.o : field_w7x.F90 OBJ/UtilCDF.o OBJ/specifications_mod.o OBJ/lagrange_mod.o OBJ/util_mod.o 
+OBJ/vmec_mod.o : vmec_mod.F90 OBJ/lagrange_mod.o OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/gs2_mod.o : gs2_mod.F90 OBJ/vmec_mod.o OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/precmod.o : precmod.F90 
+OBJ/geneyout_mod.o : geneyout_mod.F90 OBJ/vmec_mod.o OBJ/combal_module.o OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/benchmark.o : benchmark.F90 OBJ/specifications_mod.o OBJ/benchmark_mod.o 
+OBJ/benchmark_mod.o : benchmark_mod.F90 OBJ/type_mod.o 
+OBJ/pest.o : pest.F90 OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/fs_lib.o : fs_lib.F90 OBJ/specifications_mod.o OBJ/type_mod.o 
+OBJ/gist.o : gist.F90 OBJ/gs2_mod.o OBJ/geneyout_mod.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/combal_module.o OBJ/tprb_modules.o OBJ/specifications_mod.o OBJ/output_mod.o OBJ/load_mod.o OBJ/rk5_mod.o OBJ/field_mod.o OBJ/tracer_mod.o OBJ/type_mod.o OBJ/pest.o OBJ/WMPI.o 

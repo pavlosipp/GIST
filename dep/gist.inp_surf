@@ -1,0 +1,17 @@
+&coordinates
+ boozer = .t.
+/
+
+&in_out
+ global_y = .t.
+ vmec_dir = '/VMECdir'
+ vmec_file = 'wout_machine.txt'
+ out_tag = 'test'
+/
+
+&setup
+ s0 = 0.5
+ nalpha0 = 32
+ pol_turns = 1. 
+ nz0 = 128
+/
